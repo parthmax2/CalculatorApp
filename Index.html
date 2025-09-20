@@ -1,0 +1,1183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#1e3a8a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="ParthCalc">
+    <meta name="description" content="Premium Calculator by Parthmax - Experience luxury in calculations">
+    <title>Parthmax Premium Calculator</title>
+    
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iOCIgZmlsbD0idXJsKCNncmFkaWVudDApIi8+CjxwYXRoIGQ9Ik04IDEwaDE2djJIOFYxMHpNOCAxNGgxNnYySDE0VjE2SDh2LTJ6TTggMThoMTZ2MkgxNFYyMEg4di0yeiIgZmlsbD0iI2ZmZDcwMCIvPgo8ZGVmcz4KPGxpbmVhckdyYWRpZW50IGlkPSJncmFkaWVudDAiIHgxPSIwIiB5MT0iMCIgeDI9IjMyIiB5Mj0iMzIiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIj4KPHN0b3Agc3RvcC1jb2xvcj0iIzFlM2E4YSIvPgo8c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiMwZjE2MjkiLz4KPC9saW5lYXJHcmFkaWVudD4KPC9kZWZzPgo8L3N2Zz4=">
+    
+    <style>
+        :root {
+            /* Premium Color Palette */
+            --primary-dark: #0f1629;
+            --secondary-dark: #1a2332;
+            --accent-blue: #1e3a8a;
+            --deep-blue: #1d4ed8;
+            --royal-blue: #2563eb;
+            --gold: #ffd700;
+            --rich-gold: #f59e0b;
+            --warm-gold: #d97706;
+            --pearl-white: #f8fafc;
+            --silver: #e5e7eb;
+            --platinum: #d1d5db;
+            
+            /* Gradients */
+            --gradient-primary: linear-gradient(135deg, var(--primary-dark) 0%, var(--accent-blue) 50%, var(--deep-blue) 100%);
+            --gradient-secondary: linear-gradient(145deg, var(--secondary-dark) 0%, var(--primary-dark) 100%);
+            --gradient-gold: linear-gradient(135deg, var(--gold) 0%, var(--rich-gold) 50%, var(--warm-gold) 100%);
+            --gradient-silver: linear-gradient(135deg, var(--pearl-white) 0%, var(--silver) 50%, var(--platinum) 100%);
+            
+            /* Shadows */
+            --shadow-premium: 0 25px 50px rgba(15, 22, 41, 0.4), 0 15px 35px rgba(30, 58, 138, 0.2);
+            --shadow-elevated: 0 20px 40px rgba(0, 0, 0, 0.3), 0 10px 20px rgba(30, 58, 138, 0.2);
+            --shadow-floating: 0 35px 70px rgba(15, 22, 41, 0.5), 0 20px 40px rgba(30, 58, 138, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--gradient-primary);
+            color: var(--pearl-white);
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 20% 50%, rgba(255, 215, 0, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(29, 78, 216, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 40% 80%, rgba(30, 58, 138, 0.1) 0%, transparent 50%);
+            animation: float 20s ease-in-out infinite;
+            z-index: -1;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(-20px, -30px) rotate(1deg); }
+            66% { transform: translate(20px, 30px) rotate(-1deg); }
+        }
+
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .calculator {
+            background: rgba(26, 35, 50, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 32px;
+            padding: 40px 30px;
+            box-shadow: var(--shadow-floating);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Glass Effect Border */
+        .calculator::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--gradient-gold);
+            opacity: 0.8;
+        }
+
+        .calculator::after {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            right: -1px;
+            bottom: -1px;
+            border-radius: 32px;
+            padding: 1px;
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.3), transparent, rgba(29, 78, 216, 0.3));
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask-composite: exclude;
+            z-index: -1;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .brand-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            background: var(--gradient-gold);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+            letter-spacing: -0.02em;
+            text-shadow: none;
+        }
+
+        .brand-subtitle {
+            font-size: 0.95rem;
+            color: var(--silver);
+            font-weight: 400;
+            opacity: 0.8;
+            letter-spacing: 0.1em;
+        }
+
+        .mode-switcher {
+            display: flex;
+            background: rgba(15, 22, 41, 0.6);
+            border-radius: 20px;
+            padding: 4px;
+            margin: 20px 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .mode-btn {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 16px;
+            background: transparent;
+            color: var(--silver);
+            font-weight: 500;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .mode-btn.active {
+            background: var(--gradient-gold);
+            color: var(--primary-dark);
+            box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3);
+        }
+
+        .display-container {
+            background: var(--gradient-secondary);
+            border-radius: 24px;
+            padding: 30px 25px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 
+                inset 0 8px 16px rgba(0, 0, 0, 0.3),
+                0 4px 8px rgba(30, 58, 138, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .display-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.5), transparent);
+        }
+
+        .expression {
+            font-size: 1rem;
+            color: var(--platinum);
+            opacity: 0.7;
+            text-align: right;
+            margin-bottom: 5px;
+            min-height: 20px;
+            font-weight: 300;
+        }
+
+        .display {
+            font-size: 3.2rem;
+            font-weight: 200;
+            text-align: right;
+            color: var(--pearl-white);
+            min-height: 80px;
+            line-height: 1.1;
+            word-wrap: break-word;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+            letter-spacing: -0.02em;
+        }
+
+        .display.animate {
+            transform: scale(1.02);
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+        }
+
+        .memory-indicator {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            width: 10px;
+            height: 10px;
+            background: var(--gradient-gold);
+            border-radius: 50%;
+            opacity: 0;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 12px rgba(255, 215, 0, 0.8);
+        }
+
+        .memory-indicator.active {
+            opacity: 1;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .button-grid {
+            display: grid;
+            gap: 16px;
+            margin-top: 25px;
+        }
+
+        .basic-grid {
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        .scientific-grid {
+            grid-template-columns: repeat(5, 1fr);
+        }
+
+        .button {
+            border: none;
+            border-radius: 20px;
+            font-size: 1.3rem;
+            font-weight: 500;
+            height: 70px;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-family: inherit;
+        }
+
+        .button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            transform: translate(-50%, -50%);
+        }
+
+        .button:active::before {
+            width: 100%;
+            height: 100%;
+        }
+
+        .button:hover {
+            transform: translateY(-3px) scale(1.02);
+        }
+
+        .button:active {
+            transform: translateY(-1px) scale(0.98);
+        }
+
+        /* Button Types */
+        .btn-number {
+            background: rgba(248, 250, 252, 0.95);
+            color: var(--primary-dark);
+            box-shadow: 0 8px 20px rgba(248, 250, 252, 0.2);
+        }
+
+        .btn-number:hover {
+            background: var(--pearl-white);
+            box-shadow: 0 12px 30px rgba(248, 250, 252, 0.3);
+        }
+
+        .btn-operator {
+            background: var(--gradient-gold);
+            color: var(--primary-dark);
+            font-weight: 600;
+            box-shadow: 0 8px 20px rgba(255, 215, 0, 0.3);
+        }
+
+        .btn-operator:hover {
+            background: linear-gradient(135deg, #ffed4e 0%, var(--gold) 50%, var(--rich-gold) 100%);
+            box-shadow: 0 12px 30px rgba(255, 215, 0, 0.4);
+        }
+
+        .btn-function {
+            background: linear-gradient(135deg, var(--royal-blue) 0%, var(--deep-blue) 100%);
+            color: var(--pearl-white);
+            font-size: 1rem;
+            box-shadow: 0 8px 20px rgba(29, 78, 216, 0.3);
+        }
+
+        .btn-function:hover {
+            background: linear-gradient(135deg, #3b82f6 0%, var(--royal-blue) 100%);
+            box-shadow: 0 12px 30px rgba(29, 78, 216, 0.4);
+        }
+
+        .btn-memory {
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            color: var(--pearl-white);
+            font-size: 1rem;
+            box-shadow: 0 8px 20px rgba(139, 92, 246, 0.3);
+        }
+
+        .btn-memory:hover {
+            background: linear-gradient(135deg, #a78bfa 0%, #8b5cf6 100%);
+            box-shadow: 0 12px 30px rgba(139, 92, 246, 0.4);
+        }
+
+        .btn-clear {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: var(--pearl-white);
+            font-weight: 600;
+            box-shadow: 0 8px 20px rgba(239, 68, 68, 0.3);
+        }
+
+        .btn-clear:hover {
+            background: linear-gradient(135deg, #f87171 0%, #ef4444 100%);
+            box-shadow: 0 12px 30px rgba(239, 68, 68, 0.4);
+        }
+
+        .btn-equals {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: var(--pearl-white);
+            font-weight: 600;
+            font-size: 1.5rem;
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-equals:hover {
+            background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+            box-shadow: 0 12px 30px rgba(16, 185, 129, 0.4);
+        }
+
+        /* Special sizing */
+        .btn-zero { grid-column: span 2; }
+        .btn-equals-basic { grid-column: span 2; }
+
+        /* Scientific mode specific styles */
+        .scientific-mode .btn-function {
+            font-size: 0.9rem;
+            padding: 0 5px;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 25px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .creator-info {
+            margin-bottom: 20px;
+        }
+
+        .creator-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            background: var(--gradient-gold);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 5px;
+        }
+
+        .creator-subtitle {
+            font-size: 0.9rem;
+            color: var(--silver);
+            opacity: 0.8;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .social-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 25px;
+            color: var(--pearl-white);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .social-link:hover {
+            background: rgba(255, 215, 0, 0.2);
+            border-color: var(--gold);
+            transform: translateY(-2px);
+        }
+
+        .social-icon {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+
+        /* Loading animation */
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        .loading.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loader {
+            width: 60px;
+            height: 60px;
+            border: 3px solid rgba(255, 215, 0, 0.3);
+            border-top: 3px solid var(--gold);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 480px) {
+            body { padding: 10px; }
+            
+            .calculator {
+                padding: 25px 20px;
+                border-radius: 24px;
+            }
+            
+            .brand-title { font-size: 1.8rem; }
+            .display { font-size: 2.8rem; min-height: 70px; }
+            .button { height: 65px; font-size: 1.2rem; }
+            .button-grid { gap: 12px; }
+            
+            .social-links {
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .container { max-width: 520px; }
+            .calculator { padding: 50px 40px; }
+            .display { font-size: 3.8rem; min-height: 90px; }
+            .button { height: 75px; font-size: 1.4rem; }
+        }
+
+        @media (min-width: 1024px) {
+            .container { max-width: 600px; }
+            .button { height: 80px; }
+        }
+
+        /* Dark theme enhancements */
+        @media (prefers-color-scheme: dark) {
+            .btn-number {
+                background: rgba(248, 250, 252, 0.9);
+            }
+        }
+
+        /* Accessibility */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* High contrast mode */
+        @media (prefers-contrast: high) {
+            .button {
+                border-width: 2px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="loading" id="loading">
+        <div class="loader"></div>
+    </div>
+
+    <div class="container">
+        <div class="calculator">
+            <div class="header">
+                <h1 class="brand-title">PARTHMAX</h1>
+                <p class="brand-subtitle">PREMIUM CALCULATOR</p>
+            </div>
+
+            <div class="mode-switcher">
+                <button class="mode-btn active" onclick="switchMode('basic')">Essential</button>
+                <button class="mode-btn" onclick="switchMode('scientific')">Scientific</button>
+            </div>
+
+            <div class="display-container">
+                <div class="expression" id="expression"></div>
+                <div class="display" id="display">0</div>
+                <div class="memory-indicator" id="memoryIndicator"></div>
+            </div>
+
+            <!-- Basic Mode Grid -->
+            <div class="button-grid basic-grid" id="basicGrid">
+                <button class="button btn-clear" onclick="clearAll()">AC</button>
+                <button class="button btn-function" onclick="toggleSign()">±</button>
+                <button class="button btn-function" onclick="percentage()">%</button>
+                <button class="button btn-operator" onclick="setOperation('÷')">÷</button>
+                
+                <button class="button btn-number" onclick="appendNumber('7')">7</button>
+                <button class="button btn-number" onclick="appendNumber('8')">8</button>
+                <button class="button btn-number" onclick="appendNumber('9')">9</button>
+                <button class="button btn-operator" onclick="setOperation('×')">×</button>
+                
+                <button class="button btn-number" onclick="appendNumber('4')">4</button>
+                <button class="button btn-number" onclick="appendNumber('5')">5</button>
+                <button class="button btn-number" onclick="appendNumber('6')">6</button>
+                <button class="button btn-operator" onclick="setOperation('-')">−</button>
+                
+                <button class="button btn-number" onclick="appendNumber('1')">1</button>
+                <button class="button btn-number" onclick="appendNumber('2')">2</button>
+                <button class="button btn-number" onclick="appendNumber('3')">3</button>
+                <button class="button btn-operator" onclick="setOperation('+')">+</button>
+                
+                <button class="button btn-number btn-zero" onclick="appendNumber('0')">0</button>
+                <button class="button btn-number" onclick="appendNumber('.')">.</button>
+                <button class="button btn-equals btn-equals-basic" onclick="calculate()">=</button>
+            </div>
+
+            <!-- Scientific Mode Grid -->
+            <div class="button-grid scientific-grid" id="scientificGrid" style="display: none;">
+                <!-- Memory Functions -->
+                <button class="button btn-memory" onclick="memoryFunction('MC')">MC</button>
+                <button class="button btn-memory" onclick="memoryFunction('MR')">MR</button>
+                <button class="button btn-memory" onclick="memoryFunction('M+')">M+</button>
+                <button class="button btn-memory" onclick="memoryFunction('M-')">M-</button>
+                <button class="button btn-clear" onclick="clearAll()">AC</button>
+
+                <!-- Scientific Functions Row 1 -->
+                <button class="button btn-function" onclick="scientificFunction('sin')">sin</button>
+                <button class="button btn-function" onclick="scientificFunction('cos')">cos</button>
+                <button class="button btn-function" onclick="scientificFunction('tan')">tan</button>
+                <button class="button btn-function" onclick="scientificFunction('log')">log</button>
+                <button class="button btn-function" onclick="scientificFunction('ln')">ln</button>
+
+                <!-- Scientific Functions Row 2 -->
+                <button class="button btn-function" onclick="scientificFunction('sqrt')">√</button>
+                <button class="button btn-function" onclick="setOperation('^')">x²</button>
+                <button class="button btn-function" onclick="setOperation('pow')">xʸ</button>
+                <button class="button btn-function" onclick="setOperation('(')">(</button>
+                <button class="button btn-function" onclick="setOperation(')')">)</button>
+
+                <!-- Numbers and Basic Operations -->
+                <button class="button btn-number" onclick="appendNumber('7')">7</button>
+                <button class="button btn-number" onclick="appendNumber('8')">8</button>
+                <button class="button btn-number" onclick="appendNumber('9')">9</button>
+                <button class="button btn-operator" onclick="setOperation('÷')">÷</button>
+                <button class="button btn-function" onclick="deleteLast()">⌫</button>
+
+                <button class="button btn-number" onclick="appendNumber('4')">4</button>
+                <button class="button btn-number" onclick="appendNumber('5')">5</button>
+                <button class="button btn-number" onclick="appendNumber('6')">6</button>
+                <button class="button btn-operator" onclick="setOperation('×')">×</button>
+                <button class="button btn-function" onclick="toggleSign()">±</button>
+
+                <button class="button btn-number" onclick="appendNumber('1')">1</button>
+                <button class="button btn-number" onclick="appendNumber('2')">2</button>
+                <button class="button btn-number" onclick="appendNumber('3')">3</button>
+                <button class="button btn-operator" onclick="setOperation('-')">−</button>
+                <button class="button btn-function" onclick="percentage()">%</button>
+
+                <button class="button btn-number" onclick="appendNumber('0')">0</button>
+                <button class="button btn-number" onclick="appendNumber('.')">.</button>
+                <button class="button btn-function" onclick="appendNumber('π')">π</button>
+                <button class="button btn-operator" onclick="setOperation('+')">+</button>
+                <button class="button btn-equals" onclick="calculate()">=</button>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="creator-info">
+                <div class="creator-name">Created by Parthmax</div>
+                <div class="creator-subtitle">Premium Digital Experiences</div>
+            </div>
+            
+            <div class="social-links">
+                <a href="https://github.com/parthmax" class="social-link" target="_blank">
+                    <svg class="social-icon" viewBox="0 0 24 24">
+                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                    </svg>
+                    GitHub
+                </a>
+                <a href="https://twitter.com/parthmax" class="social-link" target="_blank">
+                    <svg class="social-icon" viewBox="0 0 24 24">
+                        <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                    </svg>
+                    Twitter
+                </a>
+                <a href="https://linkedin.com/in/parthmax" class="social-link" target="_blank">
+                    <svg class="social-icon" viewBox="0 0 24 24">
+                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                    </svg>
+                    LinkedIn
+                </a>
+                <a href="https://instagram.com/parthmax" class="social-link" target="_blank">
+                    <svg class="social-icon" viewBox="0 0 24 24">
+                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                    </svg>
+                    Instagram
+                </a>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Calculator State Management
+        class PremiumCalculator {
+            constructor() {
+                this.display = document.getElementById('display');
+                this.expression = document.getElementById('expression');
+                this.memoryIndicator = document.getElementById('memoryIndicator');
+                
+                this.currentInput = '0';
+                this.previousInput = '';
+                this.operation = '';
+                this.waitingForNewInput = false;
+                this.memory = 0;
+                this.isScientific = false;
+                this.history = [];
+                
+                this.init();
+            }
+
+            init() {
+                this.updateDisplay();
+                this.registerServiceWorker();
+                this.setupEventListeners();
+                this.hideLoader();
+            }
+
+            async registerServiceWorker() {
+                if ('serviceWorker' in navigator) {
+                    try {
+                        const registration = await navigator.serviceWorker.register('service-worker.js');
+                        console.log('🌟 Parthmax Calculator - Service Worker registered:', registration);
+                        
+                        // Handle updates
+                        registration.addEventListener('updatefound', () => {
+                            const newWorker = registration.installing;
+                            newWorker.addEventListener('statechange', () => {
+                                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                    this.showUpdateNotification();
+                                }
+                            });
+                        });
+                    } catch (error) {
+                        console.error('Service Worker registration failed:', error);
+                    }
+                }
+            }
+
+            showUpdateNotification() {
+                const notification = document.createElement('div');
+                notification.innerHTML = `
+                    <div style="position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: var(--gradient-gold); color: var(--primary-dark); padding: 15px 25px; border-radius: 15px; z-index: 10000; font-weight: 500;">
+                        New version available! <button onclick="location.reload()" style="margin-left: 10px; background: transparent; border: 1px solid; padding: 5px 10px; border-radius: 5px; cursor: pointer;">Update</button>
+                    </div>
+                `;
+                document.body.appendChild(notification);
+                setTimeout(() => notification.remove(), 5000);
+            }
+
+            setupEventListeners() {
+                // Keyboard support
+                document.addEventListener('keydown', (e) => this.handleKeyboard(e));
+                
+                // Button animation
+                document.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('button')) {
+                        this.createRipple(e);
+                        this.animateDisplay();
+                    }
+                });
+
+                // Mode switcher
+                document.querySelectorAll('.mode-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+                        e.target.classList.add('active');
+                    });
+                });
+            }
+
+            hideLoader() {
+                setTimeout(() => {
+                    document.getElementById('loading').classList.add('hidden');
+                }, 1000);
+            }
+
+            createRipple(event) {
+                const button = event.target;
+                const rect = button.getBoundingClientRect();
+                const ripple = document.createElement('span');
+                const size = Math.max(rect.width, rect.height);
+                const x = event.clientX - rect.left - size / 2;
+                const y = event.clientY - rect.top - size / 2;
+                
+                ripple.style.cssText = `
+                    position: absolute;
+                    width: ${size}px;
+                    height: ${size}px;
+                    left: ${x}px;
+                    top: ${y}px;
+                    background: rgba(255, 255, 255, 0.3);
+                    border-radius: 50%;
+                    transform: scale(0);
+                    animation: ripple 0.6s ease-out;
+                    pointer-events: none;
+                `;
+                
+                button.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 600);
+            }
+
+            animateDisplay() {
+                this.display.classList.add('animate');
+                setTimeout(() => this.display.classList.remove('animate'), 300);
+            }
+
+            updateDisplay() {
+                this.display.textContent = this.formatNumber(this.currentInput);
+                this.expression.textContent = this.getExpressionText();
+                
+                // Dynamic font sizing
+                const length = this.currentInput.length;
+                if (length > 12) {
+                    this.display.style.fontSize = '2.2rem';
+                } else if (length > 8) {
+                    this.display.style.fontSize = '2.8rem';
+                } else {
+                    this.display.style.fontSize = '3.2rem';
+                }
+            }
+
+            formatNumber(num) {
+                if (num === '' || num === '0') return '0';
+                
+                const number = parseFloat(num);
+                if (isNaN(number)) return num;
+                
+                // Handle very large or very small numbers
+                if (Math.abs(number) >= 1e15 || (Math.abs(number) < 1e-6 && number !== 0)) {
+                    return number.toExponential(6);
+                }
+                
+                // Format with appropriate decimal places
+                return new Intl.NumberFormat('en-US', {
+                    maximumFractionDigits: 10,
+                    minimumFractionDigits: 0
+                }).format(number);
+            }
+
+            getExpressionText() {
+                if (this.operation && this.previousInput) {
+                    return `${this.formatNumber(this.previousInput)} ${this.operation}`;
+                }
+                return '';
+            }
+
+            appendNumber(number) {
+                if (this.waitingForNewInput) {
+                    this.currentInput = '';
+                    this.waitingForNewInput = false;
+                }
+                
+                if (number === 'π') {
+                    this.currentInput = Math.PI.toString();
+                    this.waitingForNewInput = true;
+                } else if (this.currentInput === '0' && number !== '.') {
+                    this.currentInput = number;
+                } else if (number === '.' && this.currentInput.includes('.')) {
+                    return;
+                } else if (this.currentInput.length < 15) {
+                    this.currentInput += number;
+                }
+                
+                this.updateDisplay();
+            }
+
+            setOperation(op) {
+                if (this.operation && !this.waitingForNewInput) {
+                    this.calculate();
+                }
+                
+                if (op === '(' || op === ')') {
+                    if (this.currentInput === '0' || this.waitingForNewInput) {
+                        this.currentInput = op;
+                    } else {
+                        this.currentInput += op;
+                    }
+                    this.waitingForNewInput = false;
+                    this.updateDisplay();
+                    return;
+                }
+                
+                if (op === '^') {
+                    const value = parseFloat(this.currentInput);
+                    this.currentInput = Math.pow(value, 2).toString();
+                    this.waitingForNewInput = true;
+                    this.updateDisplay();
+                    return;
+                }
+                
+                this.previousInput = this.currentInput;
+                this.operation = op;
+                this.waitingForNewInput = true;
+            }
+
+            calculate() {
+                if (!this.operation || this.waitingForNewInput) return;
+                
+                let result;
+                const prev = parseFloat(this.previousInput);
+                const current = parseFloat(this.currentInput);
+                
+                if (isNaN(prev) || isNaN(current)) return;
+                
+                try {
+                    switch (this.operation) {
+                        case '+':
+                            result = prev + current;
+                            break;
+                        case '-':
+                            result = prev - current;
+                            break;
+                        case '×':
+                            result = prev * current;
+                            break;
+                        case '÷':
+                            if (current === 0) {
+                                this.showError('Cannot divide by zero');
+                                return;
+                            }
+                            result = prev / current;
+                            break;
+                        case 'pow':
+                            result = Math.pow(prev, current);
+                            break;
+                        default:
+                            return;
+                    }
+                    
+                    // Store in history
+                    this.history.unshift({
+                        expression: `${this.previousInput} ${this.operation} ${this.currentInput}`,
+                        result: result.toString()
+                    });
+                    
+                    this.currentInput = result.toString();
+                    this.operation = '';
+                    this.previousInput = '';
+                    this.waitingForNewInput = true;
+                    this.updateDisplay();
+                    
+                } catch (error) {
+                    this.showError('Calculation error');
+                }
+            }
+
+            scientificFunction(func) {
+                const value = parseFloat(this.currentInput);
+                let result;
+                
+                try {
+                    switch (func) {
+                        case 'sin':
+                            result = Math.sin(this.toRadians(value));
+                            break;
+                        case 'cos':
+                            result = Math.cos(this.toRadians(value));
+                            break;
+                        case 'tan':
+                            result = Math.tan(this.toRadians(value));
+                            break;
+                        case 'log':
+                            if (value <= 0) {
+                                this.showError('Invalid input for log');
+                                return;
+                            }
+                            result = Math.log10(value);
+                            break;
+                        case 'ln':
+                            if (value <= 0) {
+                                this.showError('Invalid input for ln');
+                                return;
+                            }
+                            result = Math.log(value);
+                            break;
+                        case 'sqrt':
+                            if (value < 0) {
+                                this.showError('Cannot calculate √ of negative');
+                                return;
+                            }
+                            result = Math.sqrt(value);
+                            break;
+                        default:
+                            return;
+                    }
+                    
+                    this.currentInput = result.toString();
+                    this.waitingForNewInput = true;
+                    this.updateDisplay();
+                    
+                } catch (error) {
+                    this.showError('Calculation error');
+                }
+            }
+
+            memoryFunction(func) {
+                const value = parseFloat(this.currentInput);
+                
+                switch (func) {
+                    case 'MC':
+                        this.memory = 0;
+                        this.memoryIndicator.classList.remove('active');
+                        break;
+                    case 'MR':
+                        this.currentInput = this.memory.toString();
+                        this.waitingForNewInput = true;
+                        this.updateDisplay();
+                        break;
+                    case 'M+':
+                        this.memory += value;
+                        this.memoryIndicator.classList.add('active');
+                        break;
+                    case 'M-':
+                        this.memory -= value;
+                        this.memoryIndicator.classList.add('active');
+                        break;
+                }
+            }
+
+            clearAll() {
+                this.currentInput = '0';
+                this.previousInput = '';
+                this.operation = '';
+                this.waitingForNewInput = false;
+                this.updateDisplay();
+            }
+
+            deleteLast() {
+                if (this.currentInput.length > 1) {
+                    this.currentInput = this.currentInput.slice(0, -1);
+                } else {
+                    this.currentInput = '0';
+                }
+                this.updateDisplay();
+            }
+
+            toggleSign() {
+                if (this.currentInput !== '0') {
+                    if (this.currentInput.startsWith('-')) {
+                        this.currentInput = this.currentInput.substring(1);
+                    } else {
+                        this.currentInput = '-' + this.currentInput;
+                    }
+                    this.updateDisplay();
+                }
+            }
+
+            percentage() {
+                const value = parseFloat(this.currentInput);
+                this.currentInput = (value / 100).toString();
+                this.updateDisplay();
+            }
+
+            toRadians(degrees) {
+                return degrees * (Math.PI / 180);
+            }
+
+            showError(message) {
+                const originalDisplay = this.display.textContent;
+                this.display.textContent = message;
+                this.display.style.color = '#ef4444';
+                
+                setTimeout(() => {
+                    this.display.textContent = originalDisplay;
+                    this.display.style.color = '';
+                }, 2000);
+            }
+
+            handleKeyboard(e) {
+                e.preventDefault();
+                
+                if (e.key >= '0' && e.key <= '9') {
+                    this.appendNumber(e.key);
+                } else if (e.key === '.') {
+                    this.appendNumber('.');
+                } else if (e.key === '+') {
+                    this.setOperation('+');
+                } else if (e.key === '-') {
+                    this.setOperation('-');
+                } else if (e.key === '*') {
+                    this.setOperation('×');
+                } else if (e.key === '/') {
+                    this.setOperation('÷');
+                } else if (e.key === 'Enter' || e.key === '=') {
+                    this.calculate();
+                } else if (e.key === 'Escape' || e.key === 'c' || e.key === 'C') {
+                    this.clearAll();
+                } else if (e.key === 'Backspace') {
+                    this.deleteLast();
+                } else if (e.key === '%') {
+                    this.percentage();
+                }
+            }
+        }
+
+        // Global functions for HTML onclick handlers
+        let calc;
+
+        function appendNumber(number) { calc.appendNumber(number); }
+        function setOperation(op) { calc.setOperation(op); }
+        function calculate() { calc.calculate(); }
+        function scientificFunction(func) { calc.scientificFunction(func); }
+        function memoryFunction(func) { calc.memoryFunction(func); }
+        function clearAll() { calc.clearAll(); }
+        function deleteLast() { calc.deleteLast(); }
+        function toggleSign() { calc.toggleSign(); }
+        function percentage() { calc.percentage(); }
+
+        function switchMode(mode) {
+            const basicGrid = document.getElementById('basicGrid');
+            const scientificGrid = document.getElementById('scientificGrid');
+            const calculator = document.querySelector('.calculator');
+            
+            if (mode === 'scientific') {
+                basicGrid.style.display = 'none';
+                scientificGrid.style.display = 'grid';
+                calculator.classList.add('scientific-mode');
+                calc.isScientific = true;
+            } else {
+                basicGrid.style.display = 'grid';
+                scientificGrid.style.display = 'none';
+                calculator.classList.remove('scientific-mode');
+                calc.isScientific = false;
+            }
+        }
+
+        // Add CSS animation for ripple effect
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple {
+                0% { transform: scale(0); opacity: 1; }
+                100% { transform: scale(2); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Initialize calculator when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            calc = new PremiumCalculator();
+            
+            // Install prompt for PWA
+            let deferredPrompt;
+            window.addEventListener('beforeinstallprompt', (e) => {
+                deferredPrompt = e;
+                showInstallPromotion();
+            });
+            
+            function showInstallPromotion() {
+                const installBanner = document.createElement('div');
+                installBanner.innerHTML = `
+                    <div style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--gradient-gold); color: var(--primary-dark); padding: 15px 25px; border-radius: 15px; z-index: 10000; text-align: center; max-width: 90%; font-weight: 500; box-shadow: var(--shadow-elevated);">
+                        <div style="margin-bottom: 10px;">Install Parthmax Calculator for the best experience!</div>
+                        <button onclick="installApp()" style="background: var(--primary-dark); color: var(--gold); border: none; padding: 8px 16px; border-radius: 8px; margin-right: 10px; cursor: pointer; font-weight: 500;">Install</button>
+                        <button onclick="this.parentElement.parentElement.remove()" style="background: transparent; color: var(--primary-dark); border: 1px solid; padding: 8px 16px; border-radius: 8px; cursor: pointer;">Later</button>
+                    </div>
+                `;
+                document.body.appendChild(installBanner);
+                
+                window.installApp = () => {
+                    installBanner.remove();
+                    deferredPrompt.prompt();
+                    deferredPrompt.userChoice.then((result) => {
+                        if (result.outcome === 'accepted') {
+                            console.log('🎉 PWA installation accepted');
+                        }
+                        deferredPrompt = null;
+                    });
+                };
+                
+                setTimeout(() => {
+                    if (installBanner.parentElement) {
+                        installBanner.remove();
+                    }
+                }, 10000);
+            }
+        });
+
+        // Handle app installation
+        window.addEventListener('appinstalled', () => {
+            console.log('🌟 Parthmax Premium Calculator installed successfully!');
+        });
+
+        // Handle online/offline status
+        window.addEventListener('online', () => {
+            document.body.style.borderTop = '3px solid #10b981';
+            setTimeout(() => {
+                document.body.style.borderTop = '';
+            }, 3000);
+        });
+
+        window.addEventListener('offline', () => {
+            document.body.style.borderTop = '3px solid #ef4444';
+        });
+    </script>
+</body>
+</html>
